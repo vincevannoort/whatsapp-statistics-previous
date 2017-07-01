@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>WhatsApp Statistics</title>
+    <link rel="stylesheet" href="./assets/css/app.css">
 </head>
 <body>
-    <!-- content -->
+    <div id="app">
+        <div>
+            <input type="file" @change="processFile($event)">
+        </div>
+    </div>
+    <script src="./assets/js/vue.js"></script>
+    <script src="./assets/js/moment.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
