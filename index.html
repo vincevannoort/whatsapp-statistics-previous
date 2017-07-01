@@ -8,7 +8,9 @@
 <body>
     <div id="app">
         <div>
-            <input type="file" @change="processFile($event)">
+            <div>{{ statistics_lines_count }}</div>
+            <div v-for="(value, key) in statistics_person_lines_count">{{ key }} - {{ value }}</div>
+            <div><input type="file" @change="processFile($event)"></div>
         </div>
     </div>
     <script src="./assets/js/vue.js"></script>

@@ -8,16 +8,6 @@ var app = new Vue({
       return this.lines.length;
     },
     statistics_person_lines_count: function() {
-      // var countedNames = names.reduce(function (allNames, name) { 
-      //   if (name in allNames) {
-      //     allNames[name]++;
-      //   }
-      //   else {
-      //     allNames[name] = 1;
-      //   }
-      //   return allNames;
-      // }, {});
-
       var counted_lines = this.lines.reduce(function (all_persons, line) {
         if (line.person in all_persons) {
           all_persons[line.person]++;
@@ -26,7 +16,6 @@ var app = new Vue({
         }
         return all_persons;
       }, {});
-
       return counted_lines;
     }
   },
@@ -39,22 +28,22 @@ var app = new Vue({
       reader.onload = function(event) {
         var content = event.target.result;
         var datelength = 8;
-        var datetimelength = 17;
+        var timelength = 8;
+        var personlength = (datelength+1 + timelength+1) + 1;
 
         // parse each line to check if the line is valid, then split the values in an object
         self.lines = content.split(/\r?\n/).filter(function(line) {
           var date = parseInt(line.substr(0, datelength).replace(/-/g,''));
-          person = line.substr(datetimelength + 2, line.substr(19).indexOf(":"));
+          person = line.substr(timelength+2, line.substr(personlength).indexOf(":"));
           if (!isNaN(date) && person != '') { return line; }
         }).map(function(line) {
           return {
-            // moment(line.substr(0, datetimelength), "DD-MM-YY HH:mm::ss")
-            datetime: line.substr(0, datetimelength),
-            person: line.substr(datetimelength + 2, line.substr(19).indexOf(":")),
-            line: line.substr(19).substr(line.substr(19).indexOf(":") + 2)
+            date: line.substr(0, datelength),
+            time: line.substr(datelength+1, timelength),
+            person: line.substr(personlength, line.substr(personlength).indexOf(":")),
+            line: line.substr(personlength).substr(line.substr(personlength).indexOf(":") + 2)
           };
         });
-        // console.log(moment( self.lines[0].substr(0,datetimelength) ));
       };
       reader.readAsText(file);
     }
