@@ -8,15 +8,19 @@
 <body>
     <div id="app">
         <div>
-            <div>Aantal berichten in totaal: {{ statistics_lines_count }}</div> <hr>
-            <div v-for="(value, key) in statistics_person_lines_count">{{ key }} - {{ value }} - {{ ((value / statistics_lines_count) * 100).toFixed(2) }}%</div> <hr>
-            <div v-for="(value, key) in statistics_emoji_count">{{ key }} - {{ value }}</div> <hr>
-            <div v-if="statistics_lines_count == 0"><input type="file" @change="processFile($event)"></div>
+            <div>Aantal berichten in totaal: {{ statistics_messages_count }}</div> <hr>
+            <div v-for="(value, key) in statistics_person_messages_count">{{ key }} - {{ value }} - {{ ((value / statistics_messages_count) * 100).toFixed(2) }}%</div> <hr>
+            <!-- <div v-for="(value, key) in statistics_emoji_count">{{ key }} - {{ value }}</div> <hr> -->
+            <!-- <div v-for="(value, key) in statistics_messages_per_day_count">{{ key }} - {{ value }}</div> <hr> -->
+            <canvas id="chart_statistics_emoji_count"></canvas> <hr>
+            <canvas id="chart_statistics_messages_per_day_count"></canvas> <hr>
+            <div v-if="statistics_messages_count == 0"><input type="file" @change="processFile($event)"></div>
         </div>
     </div>
     <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/moment.js"></script>
     <script src="./assets/js/lodash.js"></script>
+    <script src="./assets/js/chart.js"></script>
     <script src="./assets/js/app.js"></script>
 </body>
 </html>
