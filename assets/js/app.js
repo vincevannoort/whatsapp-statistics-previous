@@ -32,18 +32,7 @@ var app = new Vue({
         }
         return all_emojis;
       }, {});
-
-      // limit to 10 emoji's
-      var ordered_counted_emojis = _.fromPairs(_.sortBy(_.toPairs(counted_emojis), function(a){return a[1]}).reverse());
-      var emojis = {};
-      var count = 0;
-      for (emoji in ordered_counted_emojis) {
-        if (count < 10) {
-          emojis[emoji] = ordered_counted_emojis[emoji];
-          count++;
-        } else { break; }
-      }
-      return emojis;
+      return _.fromPairs(_.sortBy(_.toPairs(counted_emojis), function(a){return a[1]}).reverse());
     },
     statistics_messages_per_day_count: function() {
       var counted_messages_by_day = this.messages.reduce(function (all_dates, line) {
@@ -95,35 +84,70 @@ var app = new Vue({
       this.setupCharts();
     },
     setupCharts: _.debounce(function() {
-      console.log('creating charts');
-
       var chart_statistics_emoji_count = document.getElementById('chart_statistics_emoji_count').getContext('2d');
+      var emojis = 15;
       new Chart(chart_statistics_emoji_count, {
           type: 'line',
           data: {
-              labels: Object.keys(app.statistics_emoji_count),
+              labels: _.take(Object.keys(app.statistics_emoji_count), emojis),
               datasets: [{
-                  backgroundColor: 'rgb(255, 99, 132)',
-                  borderColor: 'rgb(255, 99, 132)',
-                  data: Object.values(app.statistics_emoji_count),
+                  backgroundColor: 'rgba(37, 211, 102, 0)',
+                  borderColor: 'rgb(37, 211, 102)',
+                  data: _.take(Object.values(app.statistics_emoji_count), emojis),
               }]
           },
       });
 
       var chart_statistics_messages_per_day_count = document.getElementById('chart_statistics_messages_per_day_count').getContext('2d');
       var days = 30;
-      new Chart(chart_statistics_messages_per_day_count, {
+      var test = new Chart(chart_statistics_messages_per_day_count, {
           type: 'line',
           data: {
               labels: _.takeRight(Object.keys(app.statistics_messages_per_day_count), days),
               datasets: [{
-                  backgroundColor: 'rgb(255, 99, 132)',
-                  borderColor: 'rgb(255, 99, 132)',
+                  backgroundColor: 'rgba(37, 211, 102, 0)',
+                  borderColor: 'rgb(37, 211, 102)',
                   data: _.takeRight(Object.values(app.statistics_messages_per_day_count), days),
               }]
           },
       });
-      
     }, 100),
+    // get_result_from_index_and_array: function(current_index, index, array) {
+    //   if (index === 0) {
+    //     return array[index];
+    //   } else if (index < 0) {
+    //     return array[(current_index + array.length + index) % array.length];
+    //   } else if (index > 0) {
+    //     return array[(current_index + index) % array.length];
+    //   }
+    // },
+    // get_5next_and_5previous_results_from_index_and_array: function(index, array) {
+    //   console.log(array);
+    //   console.log(Object.keys(array), Object.keys(array).length);
+    //   console.log(Object.values(array), Object.values(array).length);
+
+    //   var array_values = Object.values(array);
+    //   return 0;
+    //   // var array_keys = Object.keys(array);
+    //   // console.log(this.get_result_from_index_and_array(index, -5, array_keys));
+    //   // console.log(this.get_result_from_index_and_array(index, -5, array_values));
+    //   // return {
+    //   //   this.get_result_from_index_and_array(index, -5, array_values),
+    //   //   this.get_result_from_index_and_array(index, -4, array_values),
+    //   //   this.get_result_from_index_and_array(index, -3, array_values),
+    //   //   this.get_result_from_index_and_array(index, -2, array_values),
+    //   //   this.get_result_from_index_and_array(index, -1, array_values),
+    //   //   this.get_result_from_index_and_array(index, 0, array_values),
+    //   //   this.get_result_from_index_and_array(index, 1, array_values),
+    //   //   this.get_result_from_index_and_array(index, 2, array_values),
+    //   //   this.get_result_from_index_and_array(index, 3, array_values),
+    //   //   this.get_result_from_index_and_array(index, 4, array_values),
+    //   //   this.get_result_from_index_and_array(index, 5, array_values),
+    //   // };
+    // }
   }
 });
+
+Chart.defaults.global.legend.display = false;
+Chart.defaults.global.tooltips.enabled = false;
+var set_options = {};

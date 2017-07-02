@@ -1,10 +1,36 @@
 /* 
+Import/includes
+*/
+@import 'foundation';
+
+/* 
+Colors
+*/
+$whatsapp: #25d366;
+.whatsapp-green { color: $whatsapp; }
+$grey: #F7F7F7;
+
+/* 
+Fonts
+*/
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700');
+
+* { font-family: 'Open Sans', sans-serif; }
+
+/* 
 Background
 */
 body {
     margin: 0;
     padding: 0;
 }
+
+html {
+  box-sizing: border-box;
+  font-size: 100%; 
+}
+
+*, *:before, *:after { box-sizing: inherit; }
 
 /* 
 App
@@ -16,4 +42,65 @@ App
     min-width: 100vw;
     min-height: 100vh;
     padding: 2rem;
+}
+
+// .app-content {
+//     max-width: 62.5rem;
+// }
+
+.title {
+    font-size: 36px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* 
+Person messages count
+*/
+.person-messages-count {
+    background-color: $grey;
+    border-radius: 3px;
+    margin-bottom: 1.875rem;
+    padding: 0.5rem 1rem;
+    .person-name {
+        font-size: 16px;
+        color: #3D3D3D;
+    }
+    .person-value {
+        span:first-of-type {
+            font-size: 34px;
+            color: $whatsapp;
+            letter-spacing: 2.96px;
+        }
+        span:last-of-type {
+            font-size: 18px;
+            color: #BFBFBF;
+            letter-spacing: 1.57px;
+            display: inline-block;
+            transform: translateY(-6px);
+            &:before {
+                content: '|';
+                opacity: 0.3;
+                padding-right: 0.4rem;
+            }
+        }
+    }
+}
+
+/* 
+Transition groups
+*/
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active for <2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-group {
+    @for $i from 1 to 250 {
+        > div:nth-child(#{$i}) {
+            transition-delay: $i * 0.08s;
+        }
+    }
 }
