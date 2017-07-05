@@ -8,25 +8,27 @@
 <body>
     <div id="app">
         <div class="app-content">
-            <!-- <div class="title"><span class="whatsapp-green">whatsapp</span> statistics</div> -->
-            <div class="grid-container" v-if="statistics_messages_count == 0">
-                <input type="file" @change="processFile($event)">
+            <div class="grid-container" v-if="!done_analysing">
+                <input id="add-file" type="file" @change="processFile($event)">
             </div>
-            <!-- <div class="grid-container" v-else> -->
+            <div class="grid-container">
                 <!-- <div>Aantal berichten in totaal: {{ statistics_messages_count }}</div> <hr> -->
-                <transition-group name="list" class="list-group grid-x grid-margin-x" tag="div">
-                <div v-for="(value, key) in statistics_person_messages_count" :key="key" class="person-messages-count small-3 cell">
+                <div class="grid-x grid-margin-x">
+                    <div class="cell" v-if="done_analysing"><h2 :class="{'animated': done_analysing}">Messages per person, percentage of total</h2></div>
+                </div>
+                <transition-group name="list" class="list-group grid-x grid-margin-x align-center" tag="div">
+                <div v-for="(value, key) in statistics_person_messages_count" :key="key" class="person-messages-count auto cell">
                     <div class="person-name">{{ key }}</div>
                     <div class="person-value"><span>{{ value }}</span> <span>{{ ((value / statistics_messages_count) * 100).toFixed(2) }}%</span></div>
                 </div>
                 </transition-group>
-                <div class="grid-x">
-                    <div class="small-6 cell"><canvas id="chart_statistics_emoji_count"></canvas></div>
-                    <div class="small-6 cell"><canvas id="chart_statistics_messages_per_day_count"></canvas></div>
+                <div class="grid-x grid-margin-x" v-if="done_analysing">
+                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Emoji count</h2></div><canvas id="chart_statistics_emoji_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per month</h2></div><canvas id="chart_statistics_messages_per_month_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per day</h2></div><canvas id="chart_statistics_messages_per_day_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per hour</h2></div><canvas id="chart_statistics_messages_per_hour"></canvas></div>
                 </div>
-                <!-- <div v-for="(value, key) in statistics_emoji_count">{{ key }} - {{ value }}</div> <hr> -->
-                <!-- <div v-for="(value, key) in statistics_messages_per_day_count">{{ key }} - {{ value }}</div> <hr> -->
-            <!-- </div> -->
+            </div>
         </div>
     </div>
     <script src="./assets/js/vue.js"></script>

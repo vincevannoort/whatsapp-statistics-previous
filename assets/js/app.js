@@ -1,9 +1,16 @@
 var app = new Vue({
   el: '#app',
   data: {
-    messages: []
+    messages: [],
   },
   computed: {
+    done_analysing: function () {
+      if (this.messages.length == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     statistics_messages_count: function() {
       return this.messages.length;
     },
@@ -44,7 +51,29 @@ var app = new Vue({
         return all_dates;
       }, {});
       return counted_messages_by_day;
-    }
+    },
+    statistics_messages_per_month_count: function() {
+      var counted_messages_by_month = this.messages.reduce(function (all_dates, line) {
+        if (line.date.substr(3,5) in all_dates) {
+          all_dates[line.date.substr(3,5)]++;
+        } else {
+          all_dates[line.date.substr(3,5)] = 1;
+        }
+        return all_dates;
+      }, {});
+      return counted_messages_by_month;
+    },
+    statistics_messages_per_hour: function() {
+      var counted_messages_by_hour = this.messages.reduce(function (all_times, line) {
+        if (parseInt(line.time.substr(0,2)) in all_times) {
+          all_times[parseInt(line.time.substr(0,2))]++;
+        } else {
+          all_times[parseInt(line.time.substr(0,2))] = 1;
+        }
+        return all_times;
+      }, {});
+      return counted_messages_by_hour;
+    },
   },
   watch: {
     statistics_messages_count: 'setupCharts',
@@ -87,19 +116,18 @@ var app = new Vue({
       var chart_statistics_emoji_count = document.getElementById('chart_statistics_emoji_count').getContext('2d');
       var emojis = 15;
       new Chart(chart_statistics_emoji_count, {
-          type: 'line',
+          type: 'bar',
           data: {
               labels: _.take(Object.keys(app.statistics_emoji_count), emojis),
               datasets: [{
-                  backgroundColor: 'rgba(37, 211, 102, 0)',
-                  borderColor: 'rgb(37, 211, 102)',
+                  backgroundColor: 'rgb(37, 211, 102)',
                   data: _.take(Object.values(app.statistics_emoji_count), emojis),
               }]
           },
       });
 
       var chart_statistics_messages_per_day_count = document.getElementById('chart_statistics_messages_per_day_count').getContext('2d');
-      var days = 30;
+      var days = 10;
       var test = new Chart(chart_statistics_messages_per_day_count, {
           type: 'line',
           data: {
@@ -111,43 +139,37 @@ var app = new Vue({
               }]
           },
       });
-    }, 100),
-    // get_result_from_index_and_array: function(current_index, index, array) {
-    //   if (index === 0) {
-    //     return array[index];
-    //   } else if (index < 0) {
-    //     return array[(current_index + array.length + index) % array.length];
-    //   } else if (index > 0) {
-    //     return array[(current_index + index) % array.length];
-    //   }
-    // },
-    // get_5next_and_5previous_results_from_index_and_array: function(index, array) {
-    //   console.log(array);
-    //   console.log(Object.keys(array), Object.keys(array).length);
-    //   console.log(Object.values(array), Object.values(array).length);
 
-    //   var array_values = Object.values(array);
-    //   return 0;
-    //   // var array_keys = Object.keys(array);
-    //   // console.log(this.get_result_from_index_and_array(index, -5, array_keys));
-    //   // console.log(this.get_result_from_index_and_array(index, -5, array_values));
-    //   // return {
-    //   //   this.get_result_from_index_and_array(index, -5, array_values),
-    //   //   this.get_result_from_index_and_array(index, -4, array_values),
-    //   //   this.get_result_from_index_and_array(index, -3, array_values),
-    //   //   this.get_result_from_index_and_array(index, -2, array_values),
-    //   //   this.get_result_from_index_and_array(index, -1, array_values),
-    //   //   this.get_result_from_index_and_array(index, 0, array_values),
-    //   //   this.get_result_from_index_and_array(index, 1, array_values),
-    //   //   this.get_result_from_index_and_array(index, 2, array_values),
-    //   //   this.get_result_from_index_and_array(index, 3, array_values),
-    //   //   this.get_result_from_index_and_array(index, 4, array_values),
-    //   //   this.get_result_from_index_and_array(index, 5, array_values),
-    //   // };
-    // }
+      var chart_statistics_messages_per_month_count = document.getElementById('chart_statistics_messages_per_month_count').getContext('2d');
+      var test = new Chart(chart_statistics_messages_per_month_count, {
+          type: 'line',
+          data: {
+              labels: Object.keys(app.statistics_messages_per_month_count),
+              datasets: [{
+                  backgroundColor: 'rgba(37, 211, 102, 0)',
+                  borderColor: 'rgb(37, 211, 102)',
+                  data: Object.values(app.statistics_messages_per_month_count),
+              }]
+          },
+      });
+
+      var chart_statistics_messages_per_hour = document.getElementById('chart_statistics_messages_per_hour').getContext('2d');
+      var test = new Chart(chart_statistics_messages_per_hour, {
+          type: 'bar',
+          data: {
+              labels: Object.keys(app.statistics_messages_per_hour),
+              datasets: [{
+                  backgroundColor: 'rgb(37, 211, 102)',
+                  data: Object.values(app.statistics_messages_per_hour),
+              }]
+          },
+      });
+
+    }, 100),
   }
 });
 
 Chart.defaults.global.legend.display = false;
 Chart.defaults.global.tooltips.enabled = false;
+Chart.defaults.global.animation.duration = 2200;
 var set_options = {};
