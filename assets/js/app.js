@@ -74,6 +74,12 @@ var app = new Vue({
       }, {});
       return counted_messages_by_hour;
     },
+    statistics_time_between_messages: function() {
+      // var messages_between_map = {};
+      // this.messages.forEach(function (line, index) {
+      // }
+      return this.messages;
+    }
   },
   watch: {
     statistics_messages_count: 'setupCharts',
@@ -166,6 +172,23 @@ var app = new Vue({
           },
       });
 
+      // var messages_between_map = {};
+      // var self = this;
+      // this.messages.forEach(function (line, index) {
+      //   // if (self.messages.length == index) { break; }
+      //   var first_message = moment(self.messages[index].time, "HH:mm:ss");
+      //   var next_message = moment(self.messages[index].time, "HH:mm:ss");
+      //   console.log(first_message);
+      //   console.log(next_message);
+      //   var difference_between = moment.utc(next_message.diff(first_message));
+      //   console.log(difference_between.format("HH:mm:ss"));
+      //   // messages_between_map.push(difference_between);
+      // });
+
+      // console.log(first_message);
+      // console.log(next_message);
+      // var difference_between = moment.utc(next_message.diff(first_message));
+      // console.log(difference_between.format("HH:mm:ss"));
     }, 100),
   }
 });
