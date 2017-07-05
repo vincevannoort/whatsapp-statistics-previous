@@ -141,14 +141,15 @@ var app = new Vue({
       });
 
       var chart_statistics_messages_per_month_count = document.getElementById('chart_statistics_messages_per_month_count').getContext('2d');
+      var months = 12;
       var test = new Chart(chart_statistics_messages_per_month_count, {
           type: 'line',
           data: {
-              labels: Object.keys(app.statistics_messages_per_month_count),
+              labels: _.takeRight(Object.keys(app.statistics_messages_per_month_count), months),
               datasets: [{
                   backgroundColor: 'rgba(37, 211, 102, 0)',
                   borderColor: 'rgb(37, 211, 102)',
-                  data: Object.values(app.statistics_messages_per_month_count),
+                  data: _.takeRight(Object.values(app.statistics_messages_per_month_count), months),
               }]
           },
       });

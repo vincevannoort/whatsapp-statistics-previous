@@ -9,7 +9,7 @@ Import/includes
  */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700");
 .grid-container {
-  max-width: 85rem;
+  max-width: 75rem;
   margin: 0 auto; }
 
 .grid-container-padded {
@@ -1653,7 +1653,7 @@ Person messages count
   border-radius: 0.1875rem;
   margin-bottom: 1.875rem;
   padding: 0.5rem 1rem;
-  min-width: 15rem;
+  min-width: 17.34375rem;
   transition: all 0.1s ease-in-out; }
   .person-messages-count .person-name {
     font-size: 1rem;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>WhatsApp Statistics</title>
     <link rel="stylesheet" href="./assets/css/app.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <div id="app">
@@ -14,19 +15,19 @@
             <div class="grid-container">
                 <!-- <div>Aantal berichten in totaal: {{ statistics_messages_count }}</div> <hr> -->
                 <div class="grid-x grid-margin-x">
-                    <div class="cell" v-if="done_analysing"><h2 :class="{'animated': done_analysing}">Messages per person, percentage of total</h2></div>
+                    <div class="cell" v-if="done_analysing"><h3 :class="{'animated': done_analysing}">Messages per person, percentage of total</h3></div>
                 </div>
-                <transition-group name="list" class="list-group grid-x grid-margin-x align-center" tag="div">
-                <div v-for="(value, key) in statistics_person_messages_count" :key="key" class="person-messages-count auto cell">
+                <transition-group name="list" class="list-group grid-x grid-margin-x" tag="div">
+                <div v-for="(value, key) in statistics_person_messages_count" :key="key" class="person-messages-count auto shrink cell">
                     <div class="person-name">{{ key }}</div>
                     <div class="person-value"><span>{{ value }}</span> <span>{{ ((value / statistics_messages_count) * 100).toFixed(2) }}%</span></div>
                 </div>
                 </transition-group>
                 <div class="grid-x grid-margin-x" v-if="done_analysing">
-                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Emoji count</h2></div><canvas id="chart_statistics_emoji_count"></canvas></div>
-                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per month</h2></div><canvas id="chart_statistics_messages_per_month_count"></canvas></div>
-                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per day</h2></div><canvas id="chart_statistics_messages_per_day_count"></canvas></div>
-                    <div class="medium-6 cell"><div><h2 :class="{'animated': done_analysing}">Messages per hour</h2></div><canvas id="chart_statistics_messages_per_hour"></canvas></div>
+                    <div class="medium-6 cell"><div><h3 :class="{'animated': done_analysing}">Most used emoji's</h3></div><canvas id="chart_statistics_emoji_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h3 :class="{'animated': done_analysing}">Messages per month</h3></div><canvas id="chart_statistics_messages_per_month_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h3 :class="{'animated': done_analysing}">Messages per day</h3></div><canvas id="chart_statistics_messages_per_day_count"></canvas></div>
+                    <div class="medium-6 cell"><div><h3 :class="{'animated': done_analysing}">Messages per hour</h3></div><canvas id="chart_statistics_messages_per_hour"></canvas></div>
                 </div>
             </div>
         </div>
